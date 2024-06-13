@@ -7,7 +7,7 @@ const tagsSchema = new mongoose.Schema({
     ref: "Course",
   },
   description: {
-    type: Number,
+    type: String,
   },
   name: {
     type: String,
