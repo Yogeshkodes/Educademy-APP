@@ -72,3 +72,77 @@ exports.capturePayment = async (req, res) => {
       .json({ success: false, message: "Could not initiate order." });
   }
 };
+
+
+exports.verifyPaymentsSignature = async (req,res) =>{
+    const webhookSecret = '12345'
+
+    const signature = req.header['x-razorpay-signature']
+
+    const shasum = crypto.createHmac('sha256' , webhookSecret)
+
+    shasum.update(JSON.stringify(req.body));
+    const digest = shasum.digest('hex')
+
+
+    if(signature === digest){
+      console.log('Payment is Authorised')
+
+      const (courseID, userID) = req.body.payload.payment.entity.notes;
+
+      try {
+        const enrolledCourse  = await Course.findOneAndUpdate(
+                                                  {_id:courseID},
+                                                  {$push:{studentsEnrolled:userID}}
+                                                ,{new:true})
+
+        if(!enrolledCourse){
+          return res.status(500).json({
+            message:'course not found',
+            success:false
+          })
+        }
+
+        const enrolledStudent  = await User.findOneAndUpdate(
+          {_id:userID},
+          {$push:{courses:courseID}}
+        ,{new:true})
+
+if(!enrolledStudent){
+return res.status(500).json({
+message:'student not found',
+success:false
+})
+}
+
+
+  const emailResponse = await mailSender(
+                    enrolledStudent.email,
+                    "Congratulation from Educademy",
+                    "Congratulation,You are  onboarded into new Educademy course"
+  );
+
+
+  return res.status(200).json({
+    success:true,
+    message:'Signature verified and Course added'
+  })
+
+      } catch (error) {
+        return res.status(500).json({
+          success:false,
+          message:error.message
+        })
+      }
+
+
+    }else{
+      return res.status(500).json({
+        success:false,
+        message:"Something went wrong"
+      })
+    }
+
+
+
+}
