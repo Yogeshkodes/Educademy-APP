@@ -5,6 +5,7 @@ const OTP = require("../models/OTP");
 const bcrypt = require("bcrypt");
 require("dotenv").config();
 const mailSender = require("../utils/mailsender");
+const Profile = require("../models/Profile");
 // Send OTP
 
 exports.sendOtp = async (req, res) => {
@@ -51,6 +52,7 @@ exports.sendOtp = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "OTP generated successfully",
+      otp,
     });
   } catch (error) {
     console.log(error);
@@ -67,21 +69,19 @@ exports.signUp = async (req, res) => {
   try {
     // Fetch krlo
     const {
-      firstname,
-      lastname,
-      password,
-      otp,
+      firstName,
+      lastName,
       email,
-      accountType,
+      password,
       confirmPassword,
+      accountType,
       contactNumber,
+      otp,
     } = req.body;
-
-    // Validate krlo
-
+    // Check if All Details are there or not
     if (
-      !firstname ||
-      !lastname ||
+      !firstName ||
+      !lastName ||
       !email ||
       !password ||
       !confirmPassword ||
@@ -103,37 +103,50 @@ exports.signUp = async (req, res) => {
 
     //find most recend otp stored for the user
 
-    const recentotp = await OTP.find({ email })
-      .sort({ createdAt: -1 })
-      .limit(1);
-
-    if (recentotp.length === 0) {
+    // Find the most recent OTP for the email
+    const response = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1);
+    console.log(response);
+    if (response.length === 0) {
+      // OTP not found for the email
       return res.status(400).json({
         success: false,
-        message: "OTP NOT FOUND",
+        message: "The OTP is not valid",
       });
-    } else if (otp !== recentotp.otp) {
+    } else if (otp !== response[0].otp) {
+      // Invalid OTP
       return res.status(400).json({
         success: false,
-        message: "INVALID OTP",
+        message: "The OTP is not valid",
       });
     }
-
     // HAsh PASSWORD
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // CREATE ENTRY IN DB
+    // Create the user
+    let approved = "";
+    approved === "Instructor" ? (approved = false) : (approved = true);
 
+    // Create the Additional Profile For User
+    const profileDetails = await Profile.create({
+      gender: null,
+      dateOfBirth: null,
+      about: null,
+      contactNumber: null,
+    });
+
+    // CREATE ENTRY IN DB
+    console.log("yaha hor rha hai");
     const user = await User.create({
-      firstname,
-      lastname,
+      firstName,
+      lastName,
       email,
       contactNumber,
       password: hashedPassword,
-      accountType,
+      accountType: accountType,
+      approved: approved,
       additionalDetails: profileDetails._id,
-      image: `https://api.dicebear.com/5.x/initials/svg?seed=${firstname} ${lastname}`,
+      image: `https://api.dicebear.com/5.x/initials/svg?seed=${firstName}%20${lastName}`,
     });
 
     return res.status(200).json({
@@ -169,7 +182,7 @@ exports.login = async (req, res) => {
 
     const user = await User.findOne({ email }).populate("additionalDetails");
 
-    if (!existUser) {
+    if (!user) {
       return res.status(403).json({
         success: false,
         message: "User does not exist, Plase Sign Up first",
@@ -184,7 +197,7 @@ exports.login = async (req, res) => {
       };
 
       const token = jwt.sign(payload, process.env.JWT_SECRET, {
-        expiresIn: "2h",
+        expiresIn: "3d",
       });
 
       user.token = token;

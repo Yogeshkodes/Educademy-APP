@@ -2,17 +2,15 @@ const Course = require("../models/Courses");
 const CourseProgress = require("../models/courseprogress");
 const Profile = require("../models/Profile");
 const User = require("../models/User");
-const { uploadImageToCloudinary } = require("../utils/imageuploader");
-const { convertSecondsToDuration } = require("../utils/secToDuration");
-
-
+const { uploadImagetoCloudinary } = require("../utils/imageuploader");
+// const { convertSecondsToDuration } = require("../utils/secToDuration");
 
 // Method for updating a profile
 exports.updateProfile = async (req, res) => {
   try {
     const {
-      firstname = "",
-      lastname = "",
+      firstName = "",
+      lastName = "",
       dateOfBirth = "",
       about = "",
       contactNumber = "",
@@ -25,8 +23,8 @@ exports.updateProfile = async (req, res) => {
     const profile = await Profile.findById(userDetails.additionalDetails);
 
     const user = await User.findByIdAndUpdate(id, {
-      firstname,
-      lastname,
+      firstName,
+      lastName,
     });
     await user.save();
 
@@ -99,15 +97,55 @@ exports.getAllUserDetails = async (req, res) => {
       .populate("additionalDetails")
       .exec();
     console.log(userDetails);
+    console.log("User details:", JSON.stringify(userDetails, null, 2));
     res.status(200).json({
       success: true,
       message: "User Data fetched successfully",
       data: userDetails,
     });
   } catch (error) {
+    console.error("Error in getAllUserDetails:", error);
     return res.status(500).json({
       success: false,
       message: error.message,
+    });
+  }
+};
+
+exports.updateDisplayPicture = async (req, res) => {
+  try {
+    const displayPicture = req.files.displayPicture;
+
+    if (!displayPicture) {
+      return res.status(400).json({
+        success: false,
+        message: "No file uploaded",
+      });
+    }
+
+    const userId = req.user.id;
+    const image = await uploadImagetoCloudinary(
+      displayPicture,
+      process.env.FOLDER_NAME,
+      1000,
+      1000
+    );
+    console.log(image);
+    const updatedProfile = await User.findByIdAndUpdate(
+      { _id: userId },
+      { image: image.secure_url },
+      { new: true }
+    );
+    res.send({
+      success: true,
+      message: `Image Updated successfully`,
+      data: updatedProfile,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: "Error updating profile picture",
     });
   }
 };

@@ -1,5 +1,5 @@
 const bcrypt = require("bcrypt");
-const jsonwebtoken = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 // authentication ke liye middleware l
@@ -26,15 +26,14 @@ exports.auth = async (req, res, next) => {
 
     try {
       const decode = jwt.verify(token, process.env.JWT_SECRET);
-
       req.user = decode;
     } catch (error) {
+      console.error("Token verification error:", error);
       return res.status(401).json({
         success: false,
         message: "token is invalid",
       });
     }
-
     next();
   } catch (error) {
     console.log(error);

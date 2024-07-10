@@ -8,42 +8,42 @@ const router = express.Router();
 const {
   createCourse,
   getAllCourses,
-  getCourseDetails,
-  getFullCourseDetails,
-  editCourse,
-  getInstructorCourses,
-  deleteCourse,
-} = require("../controllers/Course");
+  getCoursedetails,
+  // getFullCourseDetails,
+  // editCourse,
+  // getInstructorCourses,
+  // deleteCourse,
+} = require("../controller/Course");
 
 // Categories Controllers Import
 const {
   showAllCategories,
   createCategory,
   categoryPageDetails,
-} = require("../controllers/Category");
+} = require("../controller/Category");
 
 // Sections Controllers Import
 const {
   createSection,
   updateSection,
   deleteSection,
-} = require("../controllers/Section");
+} = require("../controller/Section");
 
 // Sub-Sections Controllers Import
 const {
   createSubSection,
   updateSubSection,
   deleteSubSection,
-} = require("../controllers/Subsection");
+} = require("../controller/SubSection");
 
 // Rating Controllers Import
 const {
   createRating,
   getAverageRating,
   getAllRating,
-} = require("../controllers/RatingAndReview");
+} = require("../controller/RatingandReviews");
 
-const { updateCourseProgress } = require("../controllers/courseProgress");
+// const { updateCourseProgress } = require("../controller/courseProgress");
 
 // Importing Middlewares
 const {
@@ -51,7 +51,7 @@ const {
   isInstructor,
   isStudent,
   isAdmin,
-} = require("../middlewares/auth");
+} = require("../middleware/auth");
 
 // ********************************************************************************************************
 //                                      Course routes
@@ -74,17 +74,17 @@ router.post("/addSubSection", auth, isInstructor, createSubSection);
 // Get all Registered Courses
 router.get("/getAllCourses", getAllCourses);
 // Get Details for a Specific Courses
-router.post("/getCourseDetails", getCourseDetails);
+router.post("/getCourseDetails", getCoursedetails);
 // Get Details for a Specific Courses
-router.post("/getFullCourseDetails", auth, getFullCourseDetails);
+// router.post("/getFullCourseDetails", auth, getFullCourseDetails);
 // Edit Course routes
-router.post("/editCourse", auth, isInstructor, editCourse);
+// router.post("/editCourse", auth, isInstructor, editCourse);
 // Get all Courses Under a Specific Instructor
-router.get("/getInstructorCourses", auth, isInstructor, getInstructorCourses);
+// router.get("/getInstructorCourses", auth, isInstructor, getInstructorCourses);
 // Delete a Course
-router.delete("/deleteCourse", deleteCourse);
+// router.delete("/deleteCourse", deleteCourse);
 
-router.post("/updateCourseProgress", auth, isStudent, updateCourseProgress);
+// router.post("/updateCourseProgress", auth, isStudent, updateCourseProgress);
 
 // ********************************************************************************************************
 //                                      Category routes (Only by Admin)

@@ -33,10 +33,12 @@ exports.createSubSection = async (req, res) => {
 
     // Update the corresponding section with the newly created sub-section
     const updatedSection = await Section.findByIdAndUpdate(
-      { _id: sectionId },
-      { $push: { subSection: SubSectionDetails._id } },
+      sectionId,
+      { $push: { SubSection: SubSectionDetails._id } },
       { new: true }
-    ).populate("subSection");
+    ).populate({
+      path: 'SubSection'
+    });
 
     // Return the updated section in the response
     return res.status(200).json({ success: true, data: updatedSection });

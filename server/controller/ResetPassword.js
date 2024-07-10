@@ -1,8 +1,8 @@
 const User = require("../models/User");
-
+const bcrypt = require("bcrypt");
 const mailSender = require("../utils/mailsender");
 
-exports.resetPasswordLink = async (req, res) => {
+exports.resetPasswordToken = async (req, res) => {
   try {
     // fetch krliya email
 
@@ -47,6 +47,7 @@ exports.resetPasswordLink = async (req, res) => {
     );
 
     return res.json({
+      token: token,
       success: true,
       message: "Email sent succesfully, please check email and change password",
     });
@@ -77,7 +78,7 @@ exports.resetPassword = async (req, res) => {
         message: "Token is Invalid",
       });
     }
-    if (!(userDetails.resetPasswordExpires > Date.now())) {
+    if (!(userDetails.resetPasswordexpires > Date.now())) {
       return res.status(403).json({
         success: false,
         message: `Token is Expired, Please Regenerate Your Token`,

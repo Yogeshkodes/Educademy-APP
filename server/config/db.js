@@ -1,6 +1,6 @@
-const mongoose = requrie("mongoose");
+const mongoose = require("mongoose");
 
-requrie("dotenv").config();
+require("dotenv").config();
 
 exports.connect = () => {
   mongoose

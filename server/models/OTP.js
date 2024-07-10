@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const emailTemplate = require("../mail/templates/emailVerificationTemplate");
 const mailSender = require("../utils/mailsender");
 
 const OTPschema = new mongoose.Schema({
@@ -30,7 +30,7 @@ async function sendVerificationEmail(email, otp) {
     const mailResponse = await mailSender(
       email,
       "Verification Email from Educademy",
-      otp
+      emailTemplate(otp)
     );
     console.log("Email sent successfully: ", mailResponse.response);
   } catch (error) {
@@ -42,12 +42,12 @@ async function sendVerificationEmail(email, otp) {
 // Define a post-save hook to send email after the document has been saved
 OTPschema.pre("save", async function (next) {
   console.log("New document saved to database");
-
-  // Only send an email when a new document is created
-
-  await sendVerificationEmail(this.email, this.otp);
-
-  next();
+  try {
+    await sendVerificationEmail(this.email, this.otp);
+    next();
+  } catch (error) {
+    console.error("Error in pre-save hook:", error);
+    next(error);
+  }
 });
-
 module.exports = mongoose.model("OTP", OTPschema);

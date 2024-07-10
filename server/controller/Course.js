@@ -25,9 +25,31 @@ exports.createCourse = async (req, res) => {
     // Get thumbnail image from request files
     const thumbnail = req.files.thumbnailImage;
 
+    console.log("Raw _tag:", _tag);
+    console.log("Raw _instructions:", _instructions);
     // Convert the tag and instructions from stringified Array to Array
-    const tag = JSON.parse(_tag);
-    const instructions = JSON.parse(_instructions);
+    let tag, instructions;
+    try {
+      tag = JSON.parse(_tag);
+    } catch (error) {
+      console.error("Error parsing tag:", error);
+      console.log("Raw _tag:", _tag);
+      return res.status(400).json({
+        success: false,
+        message: "Invalid tag format",
+      });
+    }
+
+    try {
+      instructions = JSON.parse(_instructions);
+    } catch (error) {
+      console.error("Error parsing instructions:", error);
+      console.log("Raw _instructions:", _instructions);
+      return res.status(400).json({
+        success: false,
+        message: "Invalid instructions format",
+      });
+    }
 
     console.log("tag", tag);
     console.log("instructions", instructions);
@@ -130,7 +152,6 @@ exports.createCourse = async (req, res) => {
     });
   }
 };
-
 // Get Course List
 exports.getAllCourses = async (req, res) => {
   try {
@@ -176,10 +197,10 @@ exports.getCoursedetails = async (req, res) => {
         populate: { path: "additionalDetails" },
       })
       .populate("category")
-      .populate("ratingAndReviews")
+      // .populate("ratingAndReviews")
       .populate({
         path: "courseContent",
-        populate: { path: "subSection" },
+        populate: { path: "SubSection" },
       })
       .exec();
 
