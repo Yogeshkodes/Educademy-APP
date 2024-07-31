@@ -1,6 +1,6 @@
 import React from "react";
-import HighlightText from "../../../components/core/HomePage/HighlightText";
-import CTAButton from "../../../components/core/HomePage/Button";
+import HighlightText from "../../../Component/Core/HomePage/HighlightText";
+import CTAButton from "../../../Component/Core/HomePage/Button";
 
 const LearningGridArray = [
   {
@@ -65,7 +65,7 @@ const LearningGrid = () => {
             className={`${colSpanClass} ${colStartClass} ${cardBgClass} ${cardHeightClass}`}
           >
             {isHighlightCard ? (
-              <div className="xl:w-[90%] flex flex-col gap-3 pb-10 xl:pb-0 sm:pb-20">
+              <div className="xl:w-[90%] flex flex-col gap-3 pb-10 xl:pb-0 sm:pb-20 items-center">
                 <div className="text-4xl font-semibold text-center">
                   {card.heading}
                   <HighlightText text={card.highlightText} />
@@ -74,7 +74,7 @@ const LearningGrid = () => {
                   {card.description}
                 </p>
 
-                <div className="w-fit mt-2">
+                <div className="w-fit mt-2 ">
                   <CTAButton active={true} linkto={card.BtnLink}>
                     {card.BtnText}
                   </CTAButton>

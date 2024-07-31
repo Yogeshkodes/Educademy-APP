@@ -3,13 +3,13 @@ import FoundingStory from "../assets/Images/FoundingStory.png";
 import BannerImage1 from "../assets/Images/aboutus1.webp";
 import BannerImage2 from "../assets/Images/aboutus2.webp";
 import BannerImage3 from "../assets/Images/aboutus3.webp";
-import ContactFormSection from "../components/core/AboutPage/ContactFormSection";
-import LearningGrid from "../components/core/AboutPage/LearningGrid";
-import Quote from "../components/core/AboutPage/Quote";
-import StatsComponenet from "../components/core/AboutPage/Stats";
-import HighlightText from "../components/core/HomePage/HighlightText";
-import ReviewSlider from "../components/common/ReviewSlider";
-import Footer from "../components/common/Footer";
+import ContactFormSection from "../Component/Core/AboutPage/ContactFormSection";
+import LearningGrid from "../Component/Core/AboutPage/LearningGrid";
+import Quote from "../Component/Core/AboutPage/Quote";
+import StatsComponenet from "../Component/Core/AboutPage/Stats";
+import HighlightText from "../Component/Core/HomePage/HighlightText";
+// import ReviewSlider from "../Component/Common/ReviewSlider";
+import Footer from "../Component/Common/Footer";
 const About = () => {
   return (
     <div>
@@ -117,7 +117,7 @@ const About = () => {
           Happy & Satisfied Learners!
         </h1>
         {/* <ReviewSlider /> */}
-        <ReviewSlider />
+        {/* <ReviewSlider /> */}
       </div>
       {/* <Footer /> */}
       <Footer />
