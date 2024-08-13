@@ -1,3 +1,4 @@
+// Import necessary modules
 const Section = require("../models/Section");
 const SubSection = require("../models/subSection");
 const { uploadImagetoCloudinary } = require("../utils/imageuploader");
@@ -33,12 +34,10 @@ exports.createSubSection = async (req, res) => {
 
     // Update the corresponding section with the newly created sub-section
     const updatedSection = await Section.findByIdAndUpdate(
-      sectionId,
+      { _id: sectionId },
       { $push: { SubSection: SubSectionDetails._id } },
       { new: true }
-    ).populate({
-      path: 'SubSection'
-    });
+    ).populate("SubSection");
 
     // Return the updated section in the response
     return res.status(200).json({ success: true, data: updatedSection });
@@ -78,20 +77,23 @@ exports.updateSubSection = async (req, res) => {
         video,
         process.env.FOLDER_NAME
       );
-      subSection.Videourl = uploadDetails.secure_url;
-      subSection.timeduration = `${uploadDetails.duration}`;
+      subSection.videoUrl = uploadDetails.secure_url;
+      subSection.timeDuration = `${uploadDetails.duration}`;
     }
 
     await subSection.save();
 
+    // find updated section and return it
     const updatedSection = await Section.findById(sectionId).populate(
-      "subSection"
+      "SubSection"
     );
+
+    console.log("updated section", updatedSection);
 
     return res.json({
       success: true,
-      data: updatedSection,
       message: "Section updated successfully",
+      data: updatedSection,
     });
   } catch (error) {
     console.error(error);
@@ -123,14 +125,15 @@ exports.deleteSubSection = async (req, res) => {
         .json({ success: false, message: "SubSection not found" });
     }
 
+    // find updated section and return it
     const updatedSection = await Section.findById(sectionId).populate(
-      "subSection"
+      "SubSection"
     );
 
     return res.json({
       success: true,
-      data: updatedSection,
       message: "SubSection deleted successfully",
+      data: updatedSection,
     });
   } catch (error) {
     console.error(error);

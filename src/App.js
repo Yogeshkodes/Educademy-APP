@@ -98,7 +98,7 @@ function App() {
               {/* <Route path="dashboard/my-courses" element={<MyCourses />} /> */}
               <Route
                 path="dashboard/edit-course/:courseId"
-                // element={<EditCourse />}
+                // element={<EditCou />}
               />
             </>
           )}

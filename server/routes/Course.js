@@ -9,8 +9,9 @@ const {
   createCourse,
   getAllCourses,
   getCoursedetails,
+  editCourse,
   // getFullCourseDetails,
-  // editCourse,
+
   // getInstructorCourses,
   // deleteCourse,
 } = require("../controller/Course");
@@ -78,7 +79,7 @@ router.post("/getCourseDetails", getCoursedetails);
 // Get Details for a Specific Courses
 // router.post("/getFullCourseDetails", auth, getFullCourseDetails);
 // Edit Course routes
-// router.post("/editCourse", auth, isInstructor, editCourse);
+router.post("/editCourse", auth, isInstructor, editCourse);
 // Get all Courses Under a Specific Instructor
 // router.get("/getInstructorCourses", auth, isInstructor, getInstructorCourses);
 // Delete a Course

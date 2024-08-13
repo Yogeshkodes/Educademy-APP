@@ -136,6 +136,7 @@ export const createSection = async (data, token) => {
     const response = await apiConnector("POST", CREATE_SECTION_API, data, {
       Authorization: `Bearer ${token}`,
     });
+    
     console.log("CREATE SECTION API RESPONSE............", response);
     if (!response?.data?.success) {
       throw new Error("Could Not Create Section");
