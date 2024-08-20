@@ -1,53 +1,41 @@
+const { Mongoose } = require("mongoose");
 const Category = require("../models/Category");
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
+}
 
 exports.createCategory = async (req, res) => {
   try {
-    //data fetch krlo
-
     const { name, description } = req.body;
-
-    ///validate krlo
-    if (!name || !description) {
-      return res.status(401).json({
-        success: false,
-        message: "Required all the fields",
-      });
+    if (!name) {
+      return res
+        .status(400)
+        .json({ success: false, message: "All fields are required" });
     }
-
-    // Present hai toh db me store krlo
-
-    const categoryDetails = await Category.create({
+    const CategorysDetails = await Category.create({
       name: name,
       description: description,
     });
-
-    console.log(categoryDetails);
-
+    console.log(CategorysDetails);
     return res.status(200).json({
       success: true,
-      message: "Categories created succesfully",
+      message: "Categorys Created Successfully",
     });
   } catch (error) {
     return res.status(500).json({
-      success: false,
+      success: true,
       message: error.message,
     });
   }
 };
 
-// Create handler to see for all category
-
 exports.showAllCategories = async (req, res) => {
   try {
-    const allCategory = await Category.find(
-      {},
-      { name: true, description: true }
-    );
-
+    console.log("INSIDE SHOW ALL CATEGORIES");
+    const allCategorys = await Category.find({});
     res.status(200).json({
       success: true,
-      message: "allCategory returned succesfully",
-      allCategory,
+      data: allCategorys,
     });
   } catch (error) {
     return res.status(500).json({

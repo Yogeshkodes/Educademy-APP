@@ -19,6 +19,10 @@ import EnrolledCourses from "./Component/Core/Dashboard/EnrolledCourses";
 import Settings from "./Component/Core/Dashboard/Settings";
 import Cart from "./Component/Core/Dashboard/Cart";
 import AddCourse from "./Component/Core/Dashboard/AddCourse";
+import MyCourses from "./Component/Core/Dashboard/MyCourses";
+import EditCourse from "./Component/Core/Dashboard/EditCourse";
+import Catalog from "./Pages/Catalog";
+import CourseDetails from "./Pages/CourseDetails";
 
 function App() {
   const { user } = useSelector((state) => state.profile);
@@ -27,6 +31,9 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
+
+        <Route path="catalog/:catalogName" element={<Catalog />} />
+        <Route path="courses/:courseId" element={<CourseDetails />} />
 
         <Route
           path="signup"
@@ -95,10 +102,10 @@ function App() {
             <>
               {/* <Route path="dashboard/instructor" element={<Instruct />} /> */}
               <Route path="dashboard/add-course" element={<AddCourse />} />
-              {/* <Route path="dashboard/my-courses" element={<MyCourses />} /> */}
+              <Route path="dashboard/my-courses" element={<MyCourses />} />
               <Route
                 path="dashboard/edit-course/:courseId"
-                // element={<EditCou />}
+                element={<EditCourse />}
               />
             </>
           )}
