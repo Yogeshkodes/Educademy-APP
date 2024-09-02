@@ -1,11 +1,13 @@
 const mongoose = require("mongoose");
 
 const categorySchema = new mongoose.Schema({
-  course: {
-    type: mongoose.Schema.Types.ObjectId,
+  course: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
 
-    ref: "Course",
-  },
+      ref: "Course",
+    },
+  ],
   description: {
     type: String,
   },

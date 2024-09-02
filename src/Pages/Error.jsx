@@ -1,6 +1,6 @@
 import React from "react";
 import CTAButton from "../Component/Core/HomePage/Button";
-import backgroundImage from "../assets/Images/frame.png";
+import backgroundImage from "../assets/Images/404.png";
 
 const Error = () => {
   return (

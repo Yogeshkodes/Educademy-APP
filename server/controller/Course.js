@@ -29,8 +29,8 @@ exports.createCourse = async (req, res) => {
     // Get thumbnail image from request files
     const thumbnail = req.files.thumbnailImage;
 
-    console.log("Raw _tag:", _tag);
-    console.log("Raw _instructions:", _instructions);
+    // console.log("Raw _tag:", _tag);
+    // console.log("Raw _instructions:", _instructions);
     // Convert the tag and instructions from stringified Array to Array
     let tag, instructions;
     try {
@@ -134,12 +134,12 @@ exports.createCourse = async (req, res) => {
       { _id: category },
       {
         $push: {
-          courses: newCourse._id,
+          course: newCourse._id,
         },
       },
       { new: true }
     );
-    console.log("HEREEEEEEEE", categoryDetails2);
+    // console.log("HEREEEEEEEE", categoryDetails2);
     // Return the new course and a success message
     res.status(200).json({
       success: true,
