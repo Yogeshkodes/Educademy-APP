@@ -36,7 +36,7 @@ function CourseDetails() {
     (async () => {
       try {
         const res = await fetchCourseDetails(courseId);
-        // console.log("course details res: ", res)
+        // console.log("course details res: ", res);
         setResponse(res);
       } catch (error) {
         console.log("Could not fetch Course Details");
@@ -44,12 +44,12 @@ function CourseDetails() {
     })();
   }, [courseId]);
 
-  // console.log("response: ", response)
+  console.log("response: ", response);    
 
   // Calculating Avg Review count
   const [avgReviewCount, setAvgReviewCount] = useState(0);
   useEffect(() => {
-    const count = GetAvgRating(response?.data?.courseDetails.ratingAndReviews);
+    const count = GetAvgRating(response?.data[0]?.ratingAndReviews);
     setAvgReviewCount(count);
   }, [response]);
   // console.log("avgReviewCount: ", avgReviewCount)
@@ -62,7 +62,7 @@ function CourseDetails() {
     setIsActive(
       !isActive.includes(id)
         ? isActive.concat([id])
-        : isActive.filter((e) => e != id)
+        : isActive.filter((e) => e !== id)
     );
   };
 
@@ -70,8 +70,8 @@ function CourseDetails() {
   const [totalNoOfLectures, setTotalNoOfLectures] = useState(0);
   useEffect(() => {
     let lectures = 0;
-    response?.data?.courseDetails?.courseContent?.forEach((sec) => {
-      lectures += sec.subSection.length || 0;
+    response?.data[0]?.courseContent?.forEach((sec) => {
+      lectures += sec.SubSection.length || 0;
     });
     setTotalNoOfLectures(lectures);
   }, [response]);
@@ -99,7 +99,7 @@ function CourseDetails() {
     instructor,
     studentsEnrolled,
     createdAt,
-  } = response.data?.courseDetails;
+  } = response.data[0];
 
   const handleBuyCourse = () => {
     if (token) {
@@ -183,7 +183,7 @@ function CourseDetails() {
           {/* Courses Card */}
           <div className="right-[1rem] top-[60px] mx-auto hidden min-h-[600px] w-1/3 max-w-[410px] translate-y-24 md:translate-y-0 lg:absolute  lg:block">
             <CourseDetailsCard
-              course={response?.data?.courseDetails}
+              course={response?.data[0]}
               setConfirmationModal={setConfirmationModal}
               handleBuyCourse={handleBuyCourse}
             />
@@ -230,7 +230,7 @@ function CourseDetails() {
               {courseContent?.map((course, index) => (
                 <CourseAccordionBar
                   course={course}
-                  key={index}
+                  key={course._id || index}
                   isActive={isActive}
                   handleActive={handleActive}
                 />

@@ -32,7 +32,7 @@ const Catalog = () => {
     const getCategoryDetails = async () => {
       try {
         const res = await getCatalogaPageData(categoryId);
-       
+
         console.log("PRinting res: ", res);
         setCatalogPageData(res);
       } catch (error) {
@@ -102,7 +102,7 @@ const Catalog = () => {
         </div>
         <div>
           <CourseSlider
-            Courses={catalogPageData?.data?.selectedCategory?.courses}
+            Courses={catalogPageData?.data?.selectedCategory?.course}
           />
         </div>
       </div>

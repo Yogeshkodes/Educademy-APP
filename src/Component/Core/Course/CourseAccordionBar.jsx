@@ -15,7 +15,9 @@ export default function CourseAccordionBar({ course, isActive, handleActive }) {
   useEffect(() => {
     setSectionHeight(active ? contentEl.current.scrollHeight : 0);
   }, [active]);
-
+  if (!course) {
+    return null; // or return a loading indicator
+  }
   return (
     <div className="overflow-hidden border border-solid border-richblack-600 bg-richblack-700 text-richblack-5 last:mb-0">
       <div>
@@ -37,7 +39,7 @@ export default function CourseAccordionBar({ course, isActive, handleActive }) {
           </div>
           <div className="space-x-4">
             <span className="text-yellow-25">
-              {`${course.subSection.length || 0} lecture(s)`}
+              {`${course.SubSection.length || 0} lecture(s)`}
             </span>
           </div>
         </div>
