@@ -321,7 +321,7 @@ export const getFullDetailsOfCourse = async (courseId, token) => {
         Authorization: `Bearer ${token}`,
       }
     );
-    console.log("COURSE_FULL_DETAILS_API API RESPONSE............", response);
+    // console.log("COURSE_FULL_DETAILS_API API RESPONSE............", response);
 
     if (!response.data.success) {
       throw new Error(response.data.message);

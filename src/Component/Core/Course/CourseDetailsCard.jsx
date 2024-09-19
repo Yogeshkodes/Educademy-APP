@@ -21,6 +21,7 @@ function CourseDetailsCard({ course, setConfirmationModal, handleBuyCourse }) {
     _id: courseId,
   } = course;
 
+  console.log(course);
   const handleShare = () => {
     copy(window.location.href);
     toast.success("Link copied to clipboard");

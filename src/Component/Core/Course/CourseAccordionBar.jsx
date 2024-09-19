@@ -15,6 +15,8 @@ export default function CourseAccordionBar({ course, isActive, handleActive }) {
   useEffect(() => {
     setSectionHeight(active ? contentEl.current.scrollHeight : 0);
   }, [active]);
+
+  // console.log(course);
   if (!course) {
     return null; // or return a loading indicator
   }
@@ -52,7 +54,7 @@ export default function CourseAccordionBar({ course, isActive, handleActive }) {
         }}
       >
         <div className="text-textHead flex flex-col gap-2 px-7 py-6 font-semibold">
-          {course?.subSection?.map((subSec, i) => {
+          {course?.SubSection?.map((subSec, i) => {
             return <CourseSubSectionAccordion subSec={subSec} key={i} />;
           })}
         </div>
