@@ -115,7 +115,9 @@ export default function VideoDetailsSidebar({ setReviewModal }) {
                     >
                       <input
                         type="checkbox"
-                        checked={completedLectures.includes(topic?._id)}
+                        checked={
+                          completedLectures?.includes(topic?._id) || false
+                        }
                         onChange={() => {}}
                       />
                       {topic.title}

@@ -8,7 +8,7 @@ const {
   courseEnrollmentEmail,
 } = require("../mail/templates/courseEnrollmentMail");
 const { paymentSuccessEmail } = require("../mail/templates/paymentSuccessfull");
-const CourseProgress = require("../models/CourseProgress");
+const CourseProgress = require("../models/courseprogress");
 
 // Capture the payment and initiate the Razorpay order
 exports.capturePayment = async (req, res) => {
