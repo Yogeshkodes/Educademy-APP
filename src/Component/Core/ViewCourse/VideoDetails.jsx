@@ -35,13 +35,18 @@ const VideoDetails = () => {
         const filteredData = courseSectionData.filter(
           (course) => course._id === sectionId
         );
-        // console.log("filteredData", filteredData)
-        const filteredVideoData = filteredData?.[0]?.SubSection.filter(
-          (data) => data._id === subSectionId
-        );
-        // console.log("filteredVideoData", filteredVideoData)
-        setVideoData(filteredVideoData[0]);
-        setPreviewSource(courseEntireData.thumbnail);
+        console.log("filteredData", filteredData);
+        if (filteredData.length > 0) {
+          const filteredVideoData = filteredData[0]?.SubSection.filter(
+            (data) => data._id === subSectionId
+          );
+
+          // Ensure filteredVideoData exists and has at least one element
+          if (filteredVideoData && filteredVideoData.length > 0) {
+            setVideoData(filteredVideoData[0]);
+            setPreviewSource(courseEntireData.thumbnail);
+          }
+        }
         setVideoEnded(false);
       }
     })();
@@ -83,7 +88,7 @@ const VideoDetails = () => {
 
     if (currentSubSectionIndx !== noOfSubsections - 1) {
       const nextSubSectionId =
-        courseSectionData[currentSectionIndx].subSection[
+        courseSectionData[currentSectionIndx].SubSection[
           currentSubSectionIndx + 1
         ]._id;
       navigate(
@@ -92,7 +97,7 @@ const VideoDetails = () => {
     } else {
       const nextSectionId = courseSectionData[currentSectionIndx + 1]._id;
       const nextSubSectionId =
-        courseSectionData[currentSectionIndx + 1].subSection[0]._id;
+        courseSectionData[currentSectionIndx + 1].SubSection[0]._id;
       navigate(
         `/view-course/${courseId}/section/${nextSectionId}/sub-section/${nextSubSectionId}`
       );

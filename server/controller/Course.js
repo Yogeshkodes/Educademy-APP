@@ -5,7 +5,7 @@ const User = require("../models/User");
 const Course = require("../models/Courses");
 const Section = require("../models/Section");
 const SubSection = require("../models/subSection");
-const CourseProgress = require("../models/CourseProgress");
+const CourseProgress = require("../models/courseprogress");
 const { convertSecondsToDuration } = require("../utils/secToDuration");
 require("dotenv").config();
 
@@ -320,10 +320,10 @@ exports.getFullCourseDetails = async (req, res) => {
       })
       .exec();
 
-    // let courseProgressCount = await CourseProgress.findOne({
-    //   courseID: courseId,
-    //   userId: userId,
-    // });
+    let courseProgressCount = await CourseProgress.findOne({
+      courseID: courseId,
+      userId: userId,
+    });
 
     // console.log("courseProgressCount : ", courseProgressCount);
 
@@ -356,9 +356,9 @@ exports.getFullCourseDetails = async (req, res) => {
       data: {
         courseDetails,
         totalDuration,
-        // completedVideos: courseProgressCount?.completedVideos
-        //   ? courseProgressCount?.completedVideos
-        //   : [],
+        completedVideos: courseProgressCount?.completedVideos
+          ? courseProgressCount?.completedVideos
+          : [],
       },
     });
   } catch (error) {
