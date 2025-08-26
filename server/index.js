@@ -24,7 +24,10 @@ app.use(express.urlencoded({ extended: true })); //for using postman
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: [
+      "http://localhost:3000", // local development
+      "https://educademy-app.vercel.app", // deployed frontend
+    ],
     credentials: true,
   })
 );
